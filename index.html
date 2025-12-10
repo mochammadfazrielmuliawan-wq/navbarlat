@@ -3,29 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Latihan Navbar</title>
-    <link rel="stylesheet" href="style.css">
+    <title>My Skills Showcase</title>
+    <style>
+        /* 1. SETUP & VARIABLES */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8; /* Cyan Neon */
+            --accent-glow: rgba(56, 189, 248, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 2. LAYOUT CONTAINER */
+        .skills-container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 3. SKILL CARDS (GRID) */
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        /* Hover Effect: Glow */
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px var(--accent-glow);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .skill-percentage {
+            color: var(--accent);
+        }
+
+        /* 4. PROGRESS BAR STYLING */
+        .progress-bg {
+            background-color: #334155;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 5px;
+            width: 0%; /* Diatur oleh JS nanti */
+            transition: width 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative;
+        }
+
+        /* Shine Animation effect on the bar */
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+    </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">shinichi☕❤️</div>
-        <ul class="nav-links">
-            <li><a href="#">Beranda</a></li>
-            <li><a href="#">Profil</a></li>
-            <li><a href="#">Kontak</a></li>
-			<li><a href="#">Buku tamu</a></li>
-        </ul>
-    </nav>
-    
-    <section class="content">
-        <h1>SELAMAT DATANG !</h1>
-        <p>Halaman profil dan perkenalan</p>
-    </section>
+    <div class="skills-container">
+        <div class="header">
+            <h2>Technical Proficiency</h2>
+            <p style="color: var(--text-muted)">Core Technologies & Frameworks</p>
+        </div>
 
-    <div class="action-btn">
-        <a href="Pertemuan_2.html">Keterampilan saya</a>
+        <div class="skill-grid">
+            <div class="skill-card">
+                <div class="skill-header">
+                    <span>JavaScript (ES6+)</span>
+                    <span class="skill-percentage" data-target="90">0%</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" data-width="90%"></div>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-header">
+                    <span>CSS3 / SCSS / Tailwind</span>
+                    <span class="skill-percentage" data-target="95">0%</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" data-width="95%"></div>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-header">
+                    <span>React / Vue.js</span>
+                    <span class="skill-percentage" data-target="80">0%</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" data-width="80%"></div>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-header">
+                    <span>Node.js / Backend</span>
+                    <span class="skill-percentage" data-target="70">0%</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" data-width="70%"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script>
+        // Simple JS to animate the bars when page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            const bars = document.querySelectorAll('.progress-fill');
+            const counters = document.querySelectorAll('.skill-percentage');
+
+            // Animate Width
+            bars.forEach(bar => {
+                const targetWidth = bar.getAttribute('data-width');
+                // Sedikit delay agar transisi visual terlihat enak
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 300);
+            });
+
+            // Animate Numbers
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 1500; // ms
+                const increment = target / (duration / 20);
+                
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current) + "%";
+                        setTimeout(updateCounter, 20);
+                    } else {
+                        counter.innerText = target + "%";
+                    }
+                };
+                updateCounter();
+            });
+        });
+    </script>
 </body>
-</html>
+</html>s
